@@ -36,4 +36,25 @@ public class ProductTest {
 		product = new Product("Title", "Description", "1.5");
 		assertEquals("1.5", product.getUnitPrice().toString());
 	}
+
+	@Test
+	public void testFullDetailsAreReturnedInJson() {
+		Product product = new Product("Title", "Description", "1.01", 100);
+		assertEquals("{" +
+			"\"title\":\"Title\"," +
+			"\"kcal_per_100g\":100," +
+			"\"unit_price\":1.01," +
+			"\"description\":\"Description\"" +
+			"}", product.toJson());
+	}
+
+	@Test
+	public void testProductWithoutCaloriesIsIgnoredInJson() {
+		Product product = new Product("Title", "Description", "1");
+		assertEquals("{" +
+			"\"title\":\"Title\"," +
+			"\"unit_price\":1," +
+			"\"description\":\"Description\"" +
+			"}", product.toJson());
+	}
 }
