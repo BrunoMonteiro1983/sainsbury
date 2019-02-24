@@ -1,5 +1,6 @@
 package net.brunomonteiro.sainsbury.service;
 
+import net.brunomonteiro.sainsbury.TestHelper;
 import net.brunomonteiro.sainsbury.exception.MissingProductFieldException;
 import net.brunomonteiro.sainsbury.exception.ProductScrapeException;
 import net.brunomonteiro.sainsbury.exception.SainsburyUnavailableException;
@@ -10,13 +11,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.stubbing.OngoingStubbing;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -189,10 +184,10 @@ public class SainsburyProductScraperTest {
 
 	@Test
 	public void testMultipleProductsScrapeIsSuccessful() throws IOException, URISyntaxException {
-		String htmlContent = this.getFileContent("scraper-test-multiple-products.html");
-		String blueberriesHtmlContent = this.getFileContent("scraper-test-multiple-products-blueberries.html");
-		String cherryHtmlContent = this.getFileContent("scraper-test-multiple-products-cherry.html");
-		String berriesHtmlContent = this.getFileContent("scraper-test-multiple-products-berries.html");
+		String htmlContent = TestHelper.getFileContent("scraper-test-multiple-products.html");
+		String blueberriesHtmlContent = TestHelper.getFileContent("scraper-test-multiple-products-blueberries.html");
+		String cherryHtmlContent = TestHelper.getFileContent("scraper-test-multiple-products-cherry.html");
+		String berriesHtmlContent = TestHelper.getFileContent("scraper-test-multiple-products-berries.html");
 
 		ProductScraper scraper = this.getScraperWithContentMocked(htmlContent, blueberriesHtmlContent,
 			cherryHtmlContent, berriesHtmlContent);
@@ -234,14 +229,5 @@ public class SainsburyProductScraperTest {
 		}
 
 		return new SainsburyProductScraper(httpRequest);
-	}
-
-	private String getFileContent(String filename) throws IOException, URISyntaxException {
-		URI resourceUri = Objects.requireNonNull(getClass().getClassLoader().getResource(filename)).toURI();
-		Stream<String> lines = Files.lines(Paths.get(resourceUri));
-		String response = lines.collect(Collectors.joining("\n"));
-
-		lines.close();
-		return response;
 	}
 }

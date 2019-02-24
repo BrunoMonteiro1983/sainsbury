@@ -1,19 +1,24 @@
 package net.brunomonteiro.sainsbury.model;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Getter
-@ToString
 public class Product {
 	private static final int MAX_DECIMAL_PRECISION = 2;
 	
 	private String title;
+
+	@SerializedName("kcal_per_100g")
 	private Integer kiloCalPer100g;
+
+	@SerializedName("unit_price")
 	private BigDecimal unitPrice;
+	
 	private String description;
 
 	public Product(String title, String description, String unitPrice) {
@@ -33,5 +38,9 @@ public class Product {
 	
 	public void setKiloCalPer100g(int kiloCalPer100g) {
 		this.kiloCalPer100g = kiloCalPer100g;
+	}
+
+	public String toJson() {
+		return new GsonBuilder().disableHtmlEscaping().create().toJson(this);
 	}
 }
